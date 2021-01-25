@@ -1,0 +1,38 @@
+{
+    "name": "@daihy8759/client-api",
+    "version": "1.0.0",
+    "main": "lib/index.js",
+    "module": "esm/index.js",
+    "license": "MIT",
+    "files": [
+        "lib/",
+        "esm/"
+    ],
+    "keywords": [
+        "client-api"
+    ],
+    "author": "daihy<dai85939260@163.com>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/daihy8759/client-api"
+    },
+    "bugs": {
+        "url": "https://github.com/daihy8759/client-api/issues"
+    },
+    "homepage": "https://github.com/daihy8759/client-api#readme",
+    "scripts": {
+        "build:cjs": "tsc",
+        "build:es": "tsc -m esNext --outDir esm",
+        "build": "yarn build:cjs && yarn build:es",
+        "clean": "rimraf esm && rimraf lib",
+        "prepare": "yarn clean && yarn build"
+    },
+    "devDependencies": {
+        "rimraf": "^3.0.2",
+        "tslib": "^2.1.0",
+        "typescript": "^4.1.3"
+    },
+    "dependencies": {
+        "flyio": "^0.6.14"
+    }
+}
