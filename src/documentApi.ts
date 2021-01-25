@@ -1,16 +1,16 @@
-import ClientApi from './clientApi';
+import ClientApi, { ClientParam } from './clientApi';
 
 class DocumentApi extends ClientApi {
-    print(param) {
-        super.send(
-            {
-                address: '/api/print',
-                method: 'POST',
-                params: param.param,
-            },
-            param.onSuccess,
-            param.onError
-        );
+    /**
+     * Word转PDF
+     * @param param {@see ClientParam}
+     */
+    wordToPDF(param: ClientParam) {
+        super.postSend('/api/document/word/getPdfBytes', param);
+    }
+
+    formatDoc(param: ClientParam) {
+        super.postSend('/api/document/word/format', param);
     }
 }
 

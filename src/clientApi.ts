@@ -6,6 +6,12 @@ interface ClientApiOptions {
     onError?: (error: string) => void;
 }
 
+export interface ClientParam {
+    param: any[] | object;
+    onSuccess: (message: string) => void;
+    onError?: (error: string) => void;
+}
+
 interface RequestData {
     address: string;
     method: string;
@@ -44,6 +50,30 @@ class ClientApi {
         } else {
             this._sendUseHttp(data, successCallback, errorCallback);
         }
+    }
+
+    getSend(address: string, param: ClientParam) {
+        this.send(
+            {
+                address: address,
+                method: 'GET',
+                params: param.param,
+            },
+            param.onSuccess,
+            param.onError
+        );
+    }
+
+    postSend(address: string, param: ClientParam) {
+        this.send(
+            {
+                address: address,
+                method: 'POST',
+                params: param.param,
+            },
+            param.onSuccess,
+            param.onError
+        );
     }
 
     _canUseWebSocket() {
