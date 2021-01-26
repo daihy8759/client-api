@@ -14,7 +14,7 @@ class DeviceApi extends ClientApi {
      * @param param {@see ClientParam}
      */
     getDefaultPrinter(param: ClientParam) {
-        super.postSend('/api/device/printer/default', param);
+        super.getSend('/api/device/printer/default', param);
     }
 
     /**
@@ -22,7 +22,7 @@ class DeviceApi extends ClientApi {
      * @param param {@see ClientParam}
      */
     getCameras(param: ClientParam) {
-        super.postSend('/api/device/camera/list', param);
+        super.getSend('/api/device/camera/list', param);
     }
 }
 
