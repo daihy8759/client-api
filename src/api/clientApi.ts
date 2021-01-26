@@ -170,30 +170,26 @@ class ClientApi {
             this.websocketInstance = new WebSocket(this.webSocketAddress);
             this.websocketInstance.messageChannels = {};
             this.websocketInstance.onmessage = (event) => {
-                var result = JSON.parse(event.data);
-                var mc = this.websocketInstance!.messageChannels![
+                const result = JSON.parse(event.data);
+                const mc = this.websocketInstance!.messageChannels![
                     result.ResponseId
                 ];
+                const responseId = result.ResponseId;
                 delete result['ResponseId'];
                 if (result.Code !== 0) {
-                    if (isFunction(mc.ErrorCallback)) {
+                    if (mc && isFunction(mc.ErrorCallback)) {
                         mc.ErrorCallback(result);
-                    } else if (
-                        this.onError !== null &&
-                        typeof this.onError === 'function'
-                    ) {
+                    } else if (isFunction(this.onError)) {
                         this.onError(result);
                     }
                 } else {
-                    if (isFunction(mc.SuccessCallback)) {
+                    if (mc && isFunction(mc.SuccessCallback)) {
                         mc.SuccessCallback(result);
                     } else if (isFunction(this.onSuccess)) {
                         this.onSuccess(result);
                     }
                 }
-                delete this.websocketInstance!.messageChannels![
-                    result.ResponseId
-                ];
+                delete this.websocketInstance!.messageChannels![responseId];
             };
         }
 
