@@ -1,4 +1,4 @@
-import fly from 'flyio';
+import fly, { FlyPromise } from 'flyio';
 import { isFunction } from '../utils';
 
 interface ClientApiOptions {
@@ -91,25 +91,11 @@ class ClientApi {
         );
     }
 
-    _canUseWebSocket() {
-        var userAgent = navigator.userAgent;
-        if (userAgent.indexOf('Chrome') > -1) {
-            return true;
-        }
-        if (window.location.protocol.indexOf('https') > -1) {
-            return false;
-        }
-        if (userAgent.indexOf('MSIE') > -1) {
-            var version = userAgent.match(/MSIE ([\d.]+)/)![1];
-            if (!version || parseInt(version) < 10) {
-                return false;
-            }
-        }
-
-        return true;
+    private _canUseWebSocket() {
+        return typeof WebSocket != 'undefined';
     }
 
-    _generateMessageChannel(
+    private _generateMessageChannel(
         websocket: WebsocketIns,
         data,
         successCallback,
@@ -130,12 +116,16 @@ class ClientApi {
         }
     }
 
-    _sendUseHttp(data: RequestData, successCallback: Fn, errorCallback) {
+    private _sendUseHttp(
+        data: RequestData,
+        successCallback: Fn,
+        errorCallback
+    ) {
         if (!data.method) {
             console.error('参数错误');
             return;
         }
-        var requestPromise;
+        let requestPromise: FlyPromise<any>;
         if (data.method === 'GET') {
             requestPromise = fly.get(this.httpAddress + '/' + data.address, {
                 params: data.params,
@@ -148,12 +138,12 @@ class ClientApi {
         }
         requestPromise
             .then(function (response) {
-                if (successCallback && typeof successCallback === 'function') {
+                if (isFunction(successCallback)) {
                     successCallback(response.data);
                 }
             })
             .catch(function (error) {
-                if (errorCallback && typeof errorCallback === 'function') {
+                if (isFunction(errorCallback)) {
                     errorCallback(error);
                 } else {
                     console.error(error);
@@ -161,7 +151,7 @@ class ClientApi {
             });
     }
 
-    _sendUseWebSocket(data, successCallback, errorCallback) {
+    private _sendUseWebSocket(data, successCallback, errorCallback) {
         if (
             this.websocketInstance === null ||
             this.websocketInstance.readyState === WebSocket.CLOSING ||
@@ -204,18 +194,15 @@ class ClientApi {
             if (isFunction(this.onError)) {
                 this.onError(connectionErrorMessage);
             } else {
-                for (var key in this.websocketInstance!.messageChannels) {
-                    var mc = this.websocketInstance!.messageChannels[key];
-                    var result = {
+                for (let key in this.websocketInstance!.messageChannels) {
+                    const mc = this.websocketInstance!.messageChannels[key];
+                    const result = {
                         Status: 0,
                         Code: 50011,
                         Message: connectionErrorMessage,
                         Title: mc.Data.Title,
                     };
-                    if (
-                        mc.ErrorCallback !== null &&
-                        typeof mc.ErrorCallback === 'function'
-                    ) {
+                    if (isFunction(mc.ErrorCallback)) {
                         mc.ErrorCallback(result);
                     }
                     delete this.websocketInstance!.messageChannels[key];
