@@ -1,5 +1,5 @@
 import fly from 'flyio';
-import { isFunction } from './utils';
+import { isFunction } from '../utils';
 
 interface ClientApiOptions {
     httpHost?: string;
