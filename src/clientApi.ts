@@ -2,6 +2,10 @@ import fly from 'flyio';
 import { isFunction } from './utils';
 
 interface ClientApiOptions {
+    httpHost?: string;
+    httpPort?: number;
+    httpsHost?: string;
+    httpsPort?: number;
     onSuccess?: (message: string) => void;
     onError?: (error: string) => void;
 }
@@ -33,14 +37,18 @@ class ClientApi {
     private onError?: Fn;
 
     constructor(options: ClientApiOptions = {}) {
+        const httpHost = options.httpHost || '127.0.0.1';
+        const httpPort = options.httpPort || 14321;
+        const httpsHost = options.httpsHost || 'fx.local';
+        const httpsPort = options.httpsPort || 14322;
         this.onSuccess = options.onSuccess;
         this.onError = options.onError;
         if ('https:' == document.location.protocol) {
-            this.webSocketAddress = 'wss://fx.local:14322/client-api';
-            this.httpAddress = 'https://fx.local:14322';
+            this.webSocketAddress = `wss://${httpsHost}:${httpsPort}/client-api`;
+            this.httpAddress = `https://${httpsHost}:${httpsPort}`;
         } else {
-            this.webSocketAddress = 'ws://127.0.0.1:14321/client-api';
-            this.httpAddress = 'http://127.0.0.1:14321';
+            this.webSocketAddress = `ws://${httpHost}:${httpPort}/client-api`;
+            this.httpAddress = `http://${httpHost}:${httpPort}`;
         }
     }
 
