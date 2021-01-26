@@ -52,6 +52,13 @@ class ClientApi {
         }
     }
 
+    destroy() {
+        if (this.websocketInstance) {
+            this.websocketInstance.close();
+            this.websocketInstance = null;
+        }
+    }
+
     send(data, successCallback, errorCallback) {
         if (this._canUseWebSocket()) {
             this._sendUseWebSocket(data, successCallback, errorCallback);
