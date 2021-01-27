@@ -1,4 +1,4 @@
-import bent from 'bent';
+import axios from 'axios';
 import { isFunction } from '../utils';
 
 interface ClientApiOptions {
@@ -127,11 +127,14 @@ class ClientApi {
         }
         let requestPromise: Promise<any>;
         if (data.method === 'GET') {
-            const get = bent(this.httpAddress, 'GET', 'json', 200);
-            requestPromise = get(data.address, data.params);
+            requestPromise = axios.get(this.httpAddress + data.address, {
+                params: data.params,
+            });
         } else {
-            const post = bent(this.httpAddress, 'POST', 'json', 200);
-            requestPromise = post(data.address, data.params || {});
+            requestPromise = axios.post(
+                this.httpAddress + data.address,
+                data.params || {}
+            );
         }
         requestPromise
             .then(function (response) {
