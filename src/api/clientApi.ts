@@ -130,7 +130,7 @@ class ClientApi {
             const get = bent(this.httpAddress, 'GET', 'json', 200);
             requestPromise = get(data.address, data.params);
         } else {
-            const post = bent(this.httpAddress, 'GET', 'json', 200);
+            const post = bent(this.httpAddress, 'POST', 'json', 200);
             requestPromise = post(data.address, data.params || {});
         }
         requestPromise
