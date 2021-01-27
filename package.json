@@ -28,11 +28,12 @@
         "prepare": "yarn clean && yarn build"
     },
     "devDependencies": {
+        "@types/bent": "^7.3.2",
         "rimraf": "^3.0.2",
         "tslib": "^2.1.0",
         "typescript": "^4.1.3"
     },
     "dependencies": {
-        "flyio": "^0.6.14"
+        "bent": "^7.3.12"
     }
 }

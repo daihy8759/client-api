@@ -1,4 +1,4 @@
-import fly, { FlyPromise } from 'flyio';
+import bent from 'bent';
 import { isFunction } from '../utils';
 
 interface ClientApiOptions {
@@ -11,7 +11,7 @@ interface ClientApiOptions {
 }
 
 export interface ClientParam {
-    param: any[] | object;
+    param?: any[] | object;
     onSuccess: (message: string) => void;
     onError?: (error: string) => void;
 }
@@ -125,16 +125,13 @@ class ClientApi {
             console.error('参数错误');
             return;
         }
-        let requestPromise: FlyPromise<any>;
+        let requestPromise: Promise<any>;
         if (data.method === 'GET') {
-            requestPromise = fly.get(this.httpAddress + '/' + data.address, {
-                params: data.params,
-            });
+            const get = bent(this.httpAddress, 'GET', 'json', 200);
+            requestPromise = get(data.address, data.params);
         } else {
-            requestPromise = fly.post(
-                this.httpAddress + '/' + data.address,
-                data.params || {}
-            );
+            const post = bent(this.httpAddress, 'GET', 'json', 200);
+            requestPromise = post(data.address, data.params || {});
         }
         requestPromise
             .then(function (response) {
