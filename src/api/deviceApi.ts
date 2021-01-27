@@ -24,6 +24,14 @@ class DeviceApi extends ClientApi {
     getCameras(param: ClientParam) {
         super.getSend('/api/device/camera/list', param);
     }
+
+    /**
+     * 读取身份证
+     * @param param {@see ClientParam}
+     */
+    readIdCard(param: ClientParam) {
+        super.getSend('/api/device/idcard/read', param);
+    }
 }
 
 export default DeviceApi;
