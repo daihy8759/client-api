@@ -34,6 +34,10 @@
                             cardReadInfo.error
                         }}</el-tag>
                     </div>
+                    <el-divider />
+                    <el-button type="primary" @click="getPrinter"
+                        >获取打印机</el-button
+                    >
                 </el-card>
             </el-col>
         </el-row>
@@ -41,6 +45,7 @@
 </template>
 
 <script lang="ts">
+import { ElMessage } from 'element-plus';
 import {
     defineComponent,
     onBeforeUnmount,
@@ -95,12 +100,34 @@ export default defineComponent({
         // 批量打印
         function batchPrint() {
             printApi.print({
-                param: {},
+                param: [
+                    {
+                        Url: '',
+                        Fs: 2,
+                    },
+                ],
                 onSuccess() {},
             });
         }
 
-        return { cardReadInfo, readIdCard, autoReadCard, batchPrint };
+        function getPrinter() {
+            deviceApi.getPrinters({
+                onSuccess(res: any) {
+                    ElMessage.success({
+                        message: res.Data,
+                        type: 'success',
+                    });
+                },
+            });
+        }
+
+        return {
+            cardReadInfo,
+            readIdCard,
+            autoReadCard,
+            batchPrint,
+            getPrinter,
+        };
     },
 });
 </script>
