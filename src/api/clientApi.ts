@@ -2,17 +2,25 @@ import axios from 'axios';
 import { isFunction } from '../utils';
 
 interface ClientApiOptions {
+    /** 默认 127.0.0.1 */
     httpHost?: string;
+    /** 端口，默认 14321 */
     httpPort?: number;
+    /** ssl，默认 fx.local */
     httpsHost?: string;
+    /** ssl端口，默认 14322 */
     httpsPort?: number;
+    /** 全局成功回调 */
     onSuccess?: (message: string) => void;
+    /** 全局失败回调 */
     onError?: (error: string) => void;
 }
 
 export interface ClientParam {
     param?: any[] | object;
+    /** 成功回调 */
     onSuccess: (message: string) => void;
+    /** 失败回调 */
     onError?: (error: string) => void;
 }
 

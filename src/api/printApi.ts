@@ -1,20 +1,22 @@
 import ClientApi, { ClientParam } from './clientApi';
 
 type FileType = 'pdf' | 'word' | 'image' | 'html';
-interface PrintWithTypeParam {
-    Url: string;
-    Fs: number;
-    FileType: FileType;
-    Printer?: string;
-}
 
 interface PrintParam {
+    /** 文件地址 */
     Url: string;
+    /** 打印份数 */
     Fs: number;
+    /** 打印机 */
     Printer?: string;
+}
+interface PrintWithTypeParam extends PrintParam {
+    /** 文件类型 */
+    FileType: FileType;
 }
 
 interface ClientPrintWithTypeParam extends ClientParam {
+    /** 请求参数 */
     param: PrintWithTypeParam[];
 }
 
