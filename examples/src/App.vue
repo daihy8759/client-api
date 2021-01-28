@@ -41,6 +41,20 @@
                 </el-card>
             </el-col>
         </el-row>
+        <el-row>
+            <el-col>
+                <el-card>
+                    <template #header>
+                        <div class="clearfix">
+                            <span>基础Api</span>
+                        </div>
+                    </template>
+                    <el-button type="primary" @click="uriSchemeStart"
+                        >自定义协议启动</el-button
+                    >
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -54,7 +68,7 @@ import {
     ref,
     watch,
 } from 'vue';
-import { DeviceApi, PrintApi } from '../../src';
+import { BaseApi, DeviceApi, PrintApi } from '../../src';
 
 export default defineComponent({
     name: 'App',
@@ -70,6 +84,7 @@ export default defineComponent({
 
         const deviceApi = new DeviceApi(apiOptions);
         const printApi = new PrintApi(apiOptions);
+        const baseApi = new BaseApi(apiOptions);
         let intervalHandleRef: any = ref(0);
 
         onMounted(() => {});
@@ -121,12 +136,23 @@ export default defineComponent({
             });
         }
 
+        function uriSchemeStart() {
+            baseApi.uriSchemeStart({
+                param: {
+                    Uri: 'notary-remote-accept://enterRoom?c21hbGxJZD0yMjI=',
+                },
+                onSuccess() {},
+                onError() {},
+            });
+        }
+
         return {
             cardReadInfo,
             readIdCard,
             autoReadCard,
             batchPrint,
             getPrinter,
+            uriSchemeStart,
         };
     },
 });
