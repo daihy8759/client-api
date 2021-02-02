@@ -205,10 +205,9 @@ class ClientApi {
                 for (let key in this.websocketInstance!.messageChannels) {
                     const mc = this.websocketInstance!.messageChannels[key];
                     const result = {
-                        Status: 0,
+                        Success: false,
                         Code: 50011,
                         Message: connectionErrorMessage,
-                        Title: mc.Data.Title,
                     };
                     if (isFunction(mc.ErrorCallback)) {
                         mc.ErrorCallback(result);
