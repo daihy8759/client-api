@@ -4,9 +4,9 @@ type copyType = 'text' | 'image';
 
 interface ClipboardRequestParam {
     /** 图片地址(1.0.8支持) */
-    Url: string;
+    Url?: string;
     /** 文本或图片base64 */
-    Text: string;
+    Text?: string;
     /** 复制类型 */
     Type?: copyType;
 }
@@ -21,6 +21,9 @@ class ClipboardApi extends ClientApi {
      * @param param {@see ClipboardParam}
      */
     copyText(param: ClipboardParam) {
+        if (!param.param.Text) {
+            return;
+        }
         super.postSend('/api/clipboard', {
             ...param,
             param: {
@@ -35,10 +38,14 @@ class ClipboardApi extends ClientApi {
      * @param param {@see ClipboardParam}
      */
     copyImage(param: ClipboardParam) {
+        const requestParam = param.param || {};
+        if (!requestParam.Text && !requestParam.Url) {
+            return;
+        }
         super.postSend('/api/clipboard', {
             ...param,
             param: {
-                ...param.param,
+                ...requestParam,
                 Type: 'image',
             },
         });

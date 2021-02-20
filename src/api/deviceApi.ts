@@ -1,5 +1,11 @@
 import ClientApi, { ClientParam } from './clientApi';
 
+type CropParam = {
+    param: {
+        ImgBase64: string;
+    };
+} & ClientParam;
+
 class DeviceApi extends ClientApi {
     /**
      * 获取打印机
@@ -31,6 +37,14 @@ class DeviceApi extends ClientApi {
      */
     readIdCard(param: ClientParam) {
         super.getSend('/api/device/idcard/read', param);
+    }
+
+    /**
+     * 切边
+     * @param param {@see CropParam}
+     */
+    cropIdCard(param: CropParam) {
+        super.postSend('/api/device/idcard/crop', param);
     }
 }
 
