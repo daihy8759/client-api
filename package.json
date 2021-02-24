@@ -1,6 +1,6 @@
 {
     "name": "@daihy8759/client-api",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "main": "lib/index.js",
     "module": "esm/index.js",
     "license": "MIT",
